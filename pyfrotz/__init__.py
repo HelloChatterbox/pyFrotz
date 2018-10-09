@@ -14,11 +14,11 @@ class Frotz(object):
         self.save_file = save_file
         self.prompt_symbol = prompt_symbol
         self.reformat_spacing = reformat_spacing
-        self.frotz = self._get_frotz()
+        self._get_frotz()
 
     def _get_frotz(self):
 
-        game = subprocess.Popen([self.interpreter, self.data],
+        self.frotz = subprocess.Popen([self.interpreter, self.data],
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE)
         time.sleep(0.1)  # Allow to load
@@ -27,7 +27,6 @@ class Frotz(object):
         if exists(self.save_file):
             print('Loading saved game')
             self.restore(self.save_file)
-        return game
 
     def save(self, filename=None):
         """
@@ -120,9 +119,16 @@ class Frotz(object):
     def play_loop(self):
         print(self.get_intro())
         try:
-            while True:
+            while not self.game_ended():
                 room, descript = self.do_command(input(">>"))
                 print(room)
                 print(descript)
         except KeyboardInterrupt:
             pass
+
+    def game_ended(self):
+        poll = self.frotz.poll()
+        if poll is None:
+            return False
+        else:
+            return True

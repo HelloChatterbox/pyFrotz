@@ -85,6 +85,8 @@ class Frotz(object):
         # Read room info
         output = ""
         output += self.frotz.stdout.read(1).decode()
+        if not len(output):
+            return ""
         while output[-1] != '>':
             output += self.frotz.stdout.read(1).decode()
         lines = [l for l in output[:-1].split("\n") if l.strip() and "Score: " not in l]
@@ -101,17 +103,21 @@ class Frotz(object):
             return room, lines
         return lines
 
-    def get_intro(self):
-        output = ""
-        saw_serial = False
-        while not saw_serial:
-            output += self.frotz.stdout.read(1).decode()
-            while str(output)[-1] != '\n':
-                output += self.frotz.stdout.read(1).decode()
-            if "serial number" in output.lower():
-                saw_serial = True
+    def get_intro(self, custom_parser=None):
 
-        intro = self._frotz_read(parse_room=False) + "\n"
+        if custom_parser is not None:
+            intro = custom_parser(self)
+        else:
+            output = ""
+            saw_serial = False
+            while not saw_serial:
+                output += self.frotz.stdout.read(1).decode()
+                while str(output)[-1] != '\n':
+                    output += self.frotz.stdout.read(1).decode()
+                if "serial number" in output.lower():
+                    saw_serial = True
+
+            intro = self._frotz_read(parse_room=False) + "\n"
         # lets remove the first "look"
         room, descript = self.do_command("look")
         return intro.replace(descript, "").replace(room, "").strip()

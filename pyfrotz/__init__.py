@@ -1,11 +1,11 @@
 import time
 import subprocess
-from os.path import exists, dirname, join
+from os.path import exists, join, expanduser
 
 
 class Frotz(object):
     def __init__(self, game_data,
-                 interpreter=join(dirname(dirname(__file__)), 'frotz/dfrotz'),
+                 interpreter=join(expanduser('~/.pyfrotz'), 'dfrotz'),
                  save_file='save.qzl',
                  prompt_symbol=">",
                  reformat_spacing=True):

@@ -18,5 +18,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - changed default interperter path to path used by setup.py
 
-[unreleased]: https://github.com/OpenJarbas/PySychonaut/tree/dev
-[0.1.5]: https://github.com/OpenJarbas/PySychonaut/tree/0.1.5
+[unreleased]: https://github.com/OpenJarbas/OpenJarbas/tree/dev
+[0.1.5]: https://github.com/OpenJarbas/OpenJarbas/tree/0.1.5
